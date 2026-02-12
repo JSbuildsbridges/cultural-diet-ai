@@ -126,7 +126,7 @@ export default function DietForm() {
             value={culture}
             onChange={(e) => setCulture(e.target.value)}
             placeholder="e.g., Korean, South Indian, Mexican, Nigerian..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 placeholder-gray-400"
             disabled={loading}
           />
           {/* Quick Select */}
@@ -160,7 +160,7 @@ export default function DietForm() {
                 const selected = availableDialects.find(d => d.code === e.target.value);
                 setDialect(selected || null);
               }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900"
               disabled={loading}
             >
               {availableDialects.map((d) => (
@@ -185,7 +185,7 @@ export default function DietForm() {
             value={dietaryRestrictions}
             onChange={(e) => setDietaryRestrictions(e.target.value)}
             placeholder="e.g., vegetarian, lactose intolerant, halal, no shellfish..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900 placeholder-gray-400"
             disabled={loading}
           />
         </div>
