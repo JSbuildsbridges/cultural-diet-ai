@@ -308,7 +308,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
         <div className="flex gap-2">
           <button
             onClick={copyToClipboard}
-            className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2"
+            className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2 text-gray-900"
           >
             {copied ? (
               <>
@@ -347,7 +347,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
           className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2 ${
             showTranslated
               ? 'bg-emerald-600 text-white'
-              : 'bg-white border border-gray-300 hover:bg-gray-100'
+              : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-900'
           }`}
         >
           {translating ? (
@@ -374,7 +374,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
           className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2 ${
             speaking && currentLang === 'en'
               ? 'bg-red-500 text-white'
-              : 'bg-white border border-gray-300 hover:bg-gray-100'
+              : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-900'
           }`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -400,7 +400,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
           className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2 ${
             speaking && currentLang === 'native'
               ? 'bg-red-500 text-white'
-              : 'bg-white border border-gray-300 hover:bg-gray-100'
+              : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-900'
           }`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
