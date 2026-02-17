@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePostHog } from 'posthog-js/react';
 import MealPlanResult from './MealPlanResult';
 import DietRulesPanel from './DietRulesPanel';
 import { getDialectsForCulture, getDefaultLanguageCode } from '@/lib/languages';
@@ -19,9 +20,11 @@ const popularCultures = [
 ];
 
 export default function DietForm() {
+  const posthog = usePostHog();
   const [culture, setCulture] = useState('');
   const [dialect, setDialect] = useState<{ name: string; code: string } | null>(null);
   const [availableDialects, setAvailableDialects] = useState<{ name: string; code: string }[] | null>(null);
+  const [userRole, setUserRole] = useState('');
   const [dietaryRestrictions, setDietaryRestrictions] = useState('');
   const [mealPlan, setMealPlan] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,6 +44,7 @@ export default function DietForm() {
 
   const handleCultureSelect = (c: string) => {
     setCulture(c);
+    posthog.capture('culture_selected', { culture: c, method: 'quick-select' });
   };
 
   const getLanguageCode = (): string => {
@@ -67,6 +71,11 @@ export default function DietForm() {
     setError('');
     setMealPlan('');
 
+    // Track culture as typed if not from quick-select
+    if (!popularCultures.some(c => c.toLowerCase() === culture.toLowerCase())) {
+      posthog.capture('culture_selected', { culture, method: 'typed' });
+    }
+
     try {
       const response = await fetch('/api/generate-meals', {
         method: 'POST',
@@ -84,9 +93,18 @@ export default function DietForm() {
 
       const data = await response.json();
       setMealPlan(data.mealPlan);
+      posthog.capture('meal_plan_generated', {
+        culture,
+        language_name: getLanguageName(),
+        language_code: getLanguageCode(),
+        dietary_restrictions: dietaryRestrictions || null,
+        has_restrictions: !!dietaryRestrictions.trim(),
+        user_role: userRole || null,
+      });
 
     } catch (err) {
       setError('Something went wrong. Please try again.');
+      posthog.capture('meal_plan_generation_error', { culture, error: String(err) });
       console.error(err);
     } finally {
       setLoading(false);
@@ -159,6 +177,13 @@ export default function DietForm() {
               onChange={(e) => {
                 const selected = availableDialects.find(d => d.code === e.target.value);
                 setDialect(selected || null);
+                if (selected) {
+                  posthog.capture('dialect_selected', {
+                    culture,
+                    dialect_name: selected.name,
+                    dialect_code: selected.code,
+                  });
+                }
               }}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-900"
               disabled={loading}
@@ -174,6 +199,33 @@ export default function DietForm() {
             </p>
           </div>
         )}
+
+        {/* User Role */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2 text-gray-700">
+            Are you using this for yourself or to help someone else? (optional)
+          </label>
+          <div className="flex gap-3">
+            {[
+              { value: 'self', label: 'For myself' },
+              { value: 'caregiver', label: 'For a family member/caregiver role' },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setUserRole(userRole === option.value ? '' : option.value)}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${
+                  userRole === option.value
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+                disabled={loading}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Dietary Restrictions */}
         <div className="mb-6">
@@ -212,7 +264,10 @@ export default function DietForm() {
 
         {/* Diet Rules Toggle */}
         <button
-          onClick={() => setShowRules(!showRules)}
+          onClick={() => {
+            posthog.capture('diet_rules_toggled', { showing: !showRules });
+            setShowRules(!showRules);
+          }}
           className="w-full mt-4 py-2 text-sm text-emerald-600 hover:text-emerald-700"
         >
           {showRules ? 'Hide' : 'Show'} Low-Residue Diet Rules

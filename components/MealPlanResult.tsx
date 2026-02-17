@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { usePostHog } from 'posthog-js/react';
 
 interface MealPlanResultProps {
   mealPlan: string;
@@ -10,12 +11,14 @@ interface MealPlanResultProps {
 }
 
 export default function MealPlanResult({ mealPlan, culture, languageCode, languageName }: MealPlanResultProps) {
+  const posthog = usePostHog();
   const [copied, setCopied] = useState(false);
   const [showTranslated, setShowTranslated] = useState(false);
   const [translatedPlan, setTranslatedPlan] = useState<string | null>(null);
   const [translating, setTranslating] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [currentLang, setCurrentLang] = useState<'en' | 'native'>('en');
+  const mountTimeRef = useRef(Date.now());
 
   // Stop speech when component unmounts or meal plan changes
   useEffect(() => {
@@ -24,11 +27,21 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
     };
   }, [mealPlan]);
 
+  // Track time spent on results page
+  useEffect(() => {
+    mountTimeRef.current = Date.now();
+    return () => {
+      const durationSeconds = Math.round((Date.now() - mountTimeRef.current) / 1000);
+      posthog.capture('results_page_time', { duration_seconds: durationSeconds, culture });
+    };
+  }, [culture, posthog]);
+
   const copyToClipboard = async () => {
     const textToCopy = showTranslated && translatedPlan ? translatedPlan : mealPlan;
     try {
       await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
+      posthog.capture('meal_plan_copied', { culture, language_shown: showTranslated ? 'native' : 'english' });
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
@@ -153,15 +166,19 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
     `);
     printWindow.document.close();
     printWindow.print();
+    posthog.capture('pdf_downloaded', { culture, language_shown: showTranslated ? 'native' : 'english' });
   };
 
   const handleTranslate = async () => {
     if (translatedPlan) {
-      setShowTranslated(!showTranslated);
+      const newShowing = !showTranslated;
+      setShowTranslated(newShowing);
+      posthog.capture('translation_toggled', { showing: newShowing ? 'native' : 'english' });
       return;
     }
 
     setTranslating(true);
+    posthog.capture('translation_requested', { culture, language_name: languageName, language_code: languageCode });
     try {
       const response = await fetch('/api/translate', {
         method: 'POST',
@@ -228,6 +245,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
     utterance.onerror = () => setSpeaking(false);
 
     window.speechSynthesis.speak(utterance);
+    posthog.capture('tts_played', { language: lang, language_name: lang === 'native' ? languageName : 'English' });
   };
 
   const stopSpeaking = () => {
@@ -266,7 +284,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
                   if (ip.startsWith('*(') && ip.endsWith(')*')) {
                     return (
                       <span key={j} className="text-emerald-600 italic text-sm">
-                        {ip.replace(/\*\(|\)\*/g, '(')}
+                        {ip.replace(/\*\(/g, '(').replace(/\)\*/g, ')')}
                       </span>
                     );
                   }
