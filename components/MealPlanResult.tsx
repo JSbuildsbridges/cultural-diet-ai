@@ -153,7 +153,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
             ${htmlContent}
           </div>
           <div class="about">
-            This meal plan was generated using the Multilingual Low-Residue Diet Checker, part of <strong>SpeechMED+GI's</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support. Learn more about SpeechMED+GI at <strong>speechmed.com</strong>
+            This meal plan was generated using the Multilingual Low-Residue Diet Checker, part of <strong>SpeechMED+GI's</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support. Learn more at <strong>speechmed.com</strong> or contact us at <strong>GI@speechmed.com</strong>
           </div>
           <div class="disclaimer">
             <strong>Medical Disclaimer:</strong> This provides general dietary suggestions based on standard low-residue diet guidelines. Always follow your doctor's specific instructions for your procedure.

@@ -112,30 +112,41 @@ export default function DietForm() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      {/* Header */}
-      <div className="text-center mb-8">
+    <div className="max-w-4xl mx-auto px-4 py-4 sm:px-6 sm:py-6">
+      {/* Compact Header */}
+      <div className="text-center mb-4 sm:mb-6">
         <img
           src="/speechmed-logo.png"
           alt="SpeechMED+GI Logo"
-          className="h-20 mx-auto mb-4"
+          className="h-12 sm:h-16 mx-auto mb-2 sm:mb-3"
         />
-        <h1 className="text-4xl font-bold mb-2 text-emerald-800">Multilingual Low-Residue Diet Checker for Colonoscopy Prep</h1>
-        <p className="text-gray-600 text-lg">
-          Culturally relevant meal suggestions for your colonoscopy or endoscopy prep
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-emerald-800 leading-tight">
+          Multilingual Low-Residue Diet Checker
+        </h1>
+        <p className="text-emerald-600 font-medium text-base sm:text-lg mt-1">
+          for Colonoscopy Prep
         </p>
-        <p className="text-sm text-gray-600 mt-4 max-w-2xl mx-auto text-left">
-          Confusion about what foods are allowed during a low-residue diet in the 3–5 days before a colonoscopy is a common barrier to successful preparation, particularly for patients with limited English proficiency. With food insecurity affecting many patients, this multilingual, AI-powered diet checker is designed to meet people where they are by allowing patients and caregivers to look up foods and receive plain-language guidance on whether they are appropriate before a colonoscopy. The tool supports patient understanding, reduces diet-related errors, and helps improve screening completion. Patients and caregivers are encouraged to print the accompanying guide and keep it in the kitchen as a daily reference during preparation.
+        <p className="text-gray-500 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
+          Find culturally relevant low-residue meal ideas for the 3–5 days before colonoscopy or endoscopy — in the language and dialect you&apos;re most comfortable with.
         </p>
-        <p className="text-sm text-gray-600 mt-3 max-w-2xl mx-auto text-left">
-          This tool is part of <strong>SpeechMED+GI&apos;s</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support.
+
+        {/* Feature Icons */}
+        <div className="flex justify-center gap-4 sm:gap-6 mt-3 text-xs sm:text-sm text-gray-500">
+          <span>🌎 Multiple languages</span>
+          <span>🥗 Cultural meals</span>
+          <span>🖨️ Printable guide</span>
+        </div>
+
+        {/* Micro Trust Line */}
+        <p className="text-xs text-gray-400 mt-2">
+          Educational guidance only. No personal information collected. Always follow your care team&apos;s instructions.
         </p>
       </div>
 
-      {/* Main Form */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+      {/* Main Form Card */}
+      <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8 mb-6">
         {/* Culture Input */}
-        <div className="mb-6">
+        <div className="mb-5">
           <label className="block text-sm font-medium mb-2 text-gray-700">
             What is your cultural background?
           </label>
@@ -154,7 +165,7 @@ export default function DietForm() {
                 key={c}
                 type="button"
                 onClick={() => handleCultureSelect(c)}
-                className={`px-3 py-1 text-sm rounded-full transition-all ${
+                className={`px-3 py-1.5 text-sm rounded-full transition-all ${
                   culture.toLowerCase() === c.toLowerCase()
                     ? 'bg-emerald-600 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -168,7 +179,7 @@ export default function DietForm() {
 
         {/* Dialect Selection - Only shows when culture has multiple dialects */}
         {availableDialects && availableDialects.length > 0 && (
-          <div className="mb-6">
+          <div className="mb-5">
             <label className="block text-sm font-medium mb-2 text-gray-700">
               Preferred language for translation & audio
             </label>
@@ -201,7 +212,7 @@ export default function DietForm() {
         )}
 
         {/* User Role */}
-        <div className="mb-6">
+        <div className="mb-5">
           <label className="block text-sm font-medium mb-2 text-gray-700">
             Are you using this for yourself or to help someone else? (optional)
           </label>
@@ -228,7 +239,7 @@ export default function DietForm() {
         </div>
 
         {/* Dietary Restrictions */}
-        <div className="mb-6">
+        <div className="mb-5">
           <label className="block text-sm font-medium mb-2 text-gray-700">
             Any additional dietary restrictions? (optional)
           </label>
@@ -249,14 +260,14 @@ export default function DietForm() {
           </div>
         )}
 
-        {/* Submit Button */}
+        {/* Submit Button - taller for thumb comfort */}
         <button
           onClick={handleGenerate}
           disabled={loading}
-          className={`w-full py-3 rounded-lg font-semibold transition-all ${
+          className={`w-full py-4 rounded-xl font-semibold text-base sm:text-lg transition-all ${
             loading
               ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+              : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg'
           }`}
         >
           {loading ? 'Generating Your Meal Plan...' : 'Generate Culturally Relevant Meals'}
@@ -268,7 +279,7 @@ export default function DietForm() {
             posthog.capture('diet_rules_toggled', { showing: !showRules });
             setShowRules(!showRules);
           }}
-          className="w-full mt-4 py-2 text-sm text-emerald-600 hover:text-emerald-700"
+          className="w-full mt-3 py-2 text-sm text-emerald-600 hover:text-emerald-700"
         >
           {showRules ? 'Hide' : 'Show'} Low-Residue Diet Rules
         </button>
@@ -286,26 +297,45 @@ export default function DietForm() {
         />
       )}
 
+      {/* Why This Tool Exists - Collapsible */}
+      <details className="mt-6 bg-white rounded-xl shadow-sm border border-gray-100">
+        <summary className="px-5 py-4 text-sm font-semibold text-emerald-800 cursor-pointer hover:bg-gray-50 rounded-xl">
+          Why this tool exists
+        </summary>
+        <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed space-y-3">
+          <p>
+            Confusion about what foods are allowed during a low-residue diet in the 3–5 days before a colonoscopy is a common barrier to successful preparation, particularly for patients with limited English proficiency. With food insecurity affecting many patients, this multilingual, AI-powered diet checker is designed to meet people where they are by allowing patients and caregivers to look up foods and receive plain-language guidance on whether they are appropriate before a colonoscopy.
+          </p>
+          <p>
+            The tool supports patient understanding, reduces diet-related errors, and helps improve screening completion. Patients and caregivers are encouraged to print the accompanying guide and keep it in the kitchen as a daily reference during preparation.
+          </p>
+          <p>
+            This tool is part of <strong>SpeechMED+GI&apos;s</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support.
+          </p>
+        </div>
+      </details>
+
       {/* About this resource */}
-      <div className="mt-8 p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-        <p className="text-sm text-emerald-800 font-semibold mb-2">About this resource</p>
+      <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
+        <p className="text-sm text-emerald-800 font-semibold mb-1">About this resource</p>
         <p className="text-sm text-emerald-700">
-          This tool was developed by <strong>SpeechMED+GI</strong> to help patients and caregivers navigate colonoscopy preparation with greater clarity and confidence.
+          Developed by <strong>SpeechMED+GI</strong> to help patients and caregivers navigate colonoscopy preparation with greater clarity and confidence. For questions or feedback, contact us at{' '}
+          <a href="mailto:GI@speechmed.com" className="text-emerald-600 hover:text-emerald-800 underline">GI@speechmed.com</a>.
         </p>
         <a
           href="https://www.speechmed.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-3 text-sm text-emerald-600 hover:text-emerald-800 underline"
+          className="inline-block mt-2 text-sm text-emerald-600 hover:text-emerald-800 underline"
         >
           Learn more about SpeechMED+GI
         </a>
       </div>
 
       {/* Disclaimer */}
-      <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+      <div className="mt-3 mb-6 p-4 bg-amber-50 border border-amber-100 rounded-xl">
         <p className="text-sm text-amber-800">
-          <strong>Medical Disclaimer:</strong> This tool provides general dietary suggestions based on standard low-residue diet guidelines. Always follow your doctor's specific instructions for your procedure. Individual requirements may vary.
+          <strong>Medical Disclaimer:</strong> This tool provides general dietary suggestions based on standard low-residue diet guidelines. Always follow your doctor&apos;s specific instructions for your procedure. Individual requirements may vary.
         </p>
       </div>
     </div>
