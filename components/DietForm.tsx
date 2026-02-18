@@ -115,11 +115,13 @@ export default function DietForm() {
     <div className="max-w-4xl mx-auto px-4 py-4 sm:px-6 sm:py-6">
       {/* Compact Header */}
       <div className="text-center mb-4 sm:mb-6">
-        <img
-          src="/speechmed-logo.png"
-          alt="SpeechMED+GI Logo"
-          className="h-12 sm:h-16 mx-auto mb-2 sm:mb-3"
-        />
+        <a href="https://speechmed.com/language/en/home-2/" target="_blank" rel="noopener noreferrer">
+          <img
+            src="/speechmed-logo.png"
+            alt="SpeechMED+GI Logo"
+            className="h-12 sm:h-16 mx-auto mb-2 sm:mb-3"
+          />
+        </a>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-emerald-800 leading-tight">
           Multilingual Low-Residue Diet Checker
         </h1>
