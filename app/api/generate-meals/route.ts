@@ -15,11 +15,6 @@ function getPdfBase64(): string {
   return pdfBase64;
 }
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 function generateReferenceKey(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let key = '';
@@ -31,6 +26,11 @@ function generateReferenceKey(): string {
 
 export async function POST(req: NextRequest) {
   try {
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     const { culture, dietaryRestrictions, userRole, languageName } = await req.json();
 
     if (!culture) {
