@@ -114,9 +114,7 @@ Be specific to the ${culture} cuisine. Avoid generic Western suggestions unless 
       ai_response: content,
     });
 
-    const mealPlanWithRef = `${content}\n\n---\nReference: ${referenceKey} — Include this if you contact us at GI@speechmed.com`;
-
-    return NextResponse.json({ mealPlan: mealPlanWithRef });
+    return NextResponse.json({ mealPlan: content, referenceKey });
 
   } catch (error) {
     console.error('Error generating meals:', error);

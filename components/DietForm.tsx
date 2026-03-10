@@ -27,6 +27,7 @@ export default function DietForm() {
   const [userRole, setUserRole] = useState('');
   const [dietaryRestrictions, setDietaryRestrictions] = useState('');
   const [mealPlan, setMealPlan] = useState('');
+  const [referenceKey, setReferenceKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showRules, setShowRules] = useState(false);
@@ -93,6 +94,7 @@ export default function DietForm() {
 
       const data = await response.json();
       setMealPlan(data.mealPlan);
+      setReferenceKey(data.referenceKey ?? '');
       posthog.capture('meal_plan_generated', {
         culture,
         language_name: getLanguageName(),
@@ -129,8 +131,8 @@ export default function DietForm() {
           for Colonoscopy Prep
         </p>
         <p className="text-gray-500 text-sm mt-1">
-          This tool is in beta. If a food suggestion doesn&apos;t look right, please email us at{' '}
-          <a href="mailto:GI@speechmed.com" className="underline">GI@speechmed.com</a>
+          ⚠️ Beta version — If a suggested food looks wrong or unsafe, please email{' '}
+          <a href="mailto:GI@speechmed.com?subject=Diet%20Checker%20Feedback" className="underline">GI@speechmed.com</a>
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
           Find culturally relevant low-residue meal ideas for the 3–5 days before colonoscopy or endoscopy — in the language and dialect you&apos;re most comfortable with.
@@ -300,6 +302,7 @@ export default function DietForm() {
           culture={culture}
           languageCode={getLanguageCode()}
           languageName={getLanguageName()}
+          referenceKey={referenceKey}
         />
       )}
 
@@ -325,8 +328,9 @@ export default function DietForm() {
       <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
         <p className="text-sm text-emerald-800 font-semibold mb-1">About this resource</p>
         <p className="text-sm text-emerald-700">
-          Developed by <strong>SpeechMED+GI</strong> to help patients and caregivers navigate colonoscopy preparation with greater clarity and confidence. For questions or feedback, contact us at{' '}
-          <a href="mailto:GI@speechmed.com" className="text-emerald-600 hover:text-emerald-800 underline">GI@speechmed.com</a>.
+          Developed by <strong>SpeechMED+GI</strong> to help patients and caregivers navigate colonoscopy preparation with greater clarity and confidence. Does a food suggestion look wrong for your culture or diet? Email us at{' '}
+          <a href="mailto:GI@speechmed.com?subject=Diet%20Checker%20Feedback" className="text-emerald-600 hover:text-emerald-800 underline">GI@speechmed.com</a>{' '}
+          and include your Reference code. We review every report.
         </p>
         <a
           href="https://www.speechmed.com"

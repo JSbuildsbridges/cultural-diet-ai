@@ -8,9 +8,10 @@ interface MealPlanResultProps {
   culture: string;
   languageCode: string;
   languageName: string;
+  referenceKey: string;
 }
 
-export default function MealPlanResult({ mealPlan, culture, languageCode, languageName }: MealPlanResultProps) {
+export default function MealPlanResult({ mealPlan, culture, languageCode, languageName, referenceKey }: MealPlanResultProps) {
   const posthog = usePostHog();
   const [copied, setCopied] = useState(false);
   const [showTranslated, setShowTranslated] = useState(false);
@@ -148,6 +149,15 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
               font-size: 12px;
               color: #065f46;
             }
+            .reference {
+              background: #fffbeb;
+              border: 1px solid #f59e0b;
+              padding: 12px;
+              border-radius: 6px;
+              margin-top: 16px;
+              font-size: 12px;
+              color: #92400e;
+            }
           </style>
         </head>
         <body>
@@ -164,6 +174,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
           <div class="disclaimer">
             <strong>Medical Disclaimer:</strong> This provides general dietary suggestions based on standard low-residue diet guidelines. Always follow your doctor's specific instructions for your procedure.
           </div>
+          ${referenceKey ? `<div class="reference">⚠️ Does something look wrong? Email <strong>GI@speechmed.com</strong> with your reference code: <strong>${referenceKey}</strong> — We will review it within 48 hours.</div>` : ''}
           <div class="footer">
             ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </div>
@@ -444,6 +455,19 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
           <strong>Tip:</strong> Print or save this meal plan and share it with family members who might be helping you prepare food during your prep period.
         </p>
       </div>
+
+      {referenceKey && (
+        <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+          ⚠️ Does something look wrong?{' '}
+          <a
+            href={`mailto:GI@speechmed.com?subject=Diet%20Checker%20Feedback%20-%20Ref%3A%20${referenceKey}`}
+            className="underline font-medium"
+          >
+            Email GI@speechmed.com
+          </a>{' '}
+          with your reference code: <strong>{referenceKey}</strong> — We will review it within 48 hours.
+        </div>
+      )}
     </div>
   );
 }
