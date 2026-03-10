@@ -123,10 +123,14 @@ export default function DietForm() {
           />
         </a>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-emerald-800 leading-tight">
-          Multilingual Low-Residue Diet Checker
+          Multilingual Low-Fiber Low-Residue Diet Checker (Beta)
         </h1>
         <p className="text-emerald-600 font-medium text-base sm:text-lg mt-1">
           for Colonoscopy Prep
+        </p>
+        <p className="text-gray-500 text-sm mt-1">
+          This tool is in beta. If a food suggestion doesn&apos;t look right, please email us at{' '}
+          <a href="mailto:GI@speechmed.com" className="underline">GI@speechmed.com</a>
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
           Find culturally relevant low-residue meal ideas for the 3–5 days before colonoscopy or endoscopy — in the language and dialect you&apos;re most comfortable with.
@@ -283,7 +287,7 @@ export default function DietForm() {
           }}
           className="w-full mt-3 py-2 text-sm text-emerald-600 hover:text-emerald-700"
         >
-          {showRules ? 'Hide' : 'Show'} Low-Residue Diet Rules
+          {showRules ? 'Hide' : 'Show'} Low-Fiber Low-Residue Diet Rules
         </button>
 
         {showRules && <DietRulesPanel />}
