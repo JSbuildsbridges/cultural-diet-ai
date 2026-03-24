@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePostHog } from 'posthog-js/react';
 import MealPlanResult from './MealPlanResult';
 import DietRulesPanel from './DietRulesPanel';
-import { getDialectsForCulture, getDefaultLanguageCode } from '@/lib/languages';
+import { getDialectsForCulture, getDefaultLanguageCode, getLanguageDisplayName } from '@/lib/languages';
 
 const popularCultures = [
   'Korean',
@@ -59,7 +59,8 @@ export default function DietForm() {
     if (dialect) {
       return dialect.name;
     }
-    return culture;
+    const code = getDefaultLanguageCode(culture);
+    return getLanguageDisplayName(code, culture);
   };
 
   const handleGenerate = async () => {
@@ -131,8 +132,8 @@ export default function DietForm() {
           for Colonoscopy Prep
         </p>
         <p className="text-gray-500 text-sm mt-1">
-          ⚠️ Beta version — If a suggested food looks wrong or unsafe, please email{' '}
-          <a href="mailto:GI@speechmed.com?subject=Diet%20Checker%20Feedback" className="underline">GI@speechmed.com</a>
+          ⚠️ Beta version — If a suggested food looks wrong or unsafe, please{' '}
+          <a href="https://forms.gle/bkERVwZaCK4xiAd39" target="_blank" rel="noopener noreferrer" className="underline">fill out our feedback form</a>
         </p>
         <p className="text-gray-500 text-sm sm:text-base mt-2 max-w-2xl mx-auto leading-relaxed">
           Find culturally relevant low-residue meal ideas for the 3–5 days before colonoscopy or endoscopy — in the language and dialect you&apos;re most comfortable with.
@@ -319,7 +320,7 @@ export default function DietForm() {
             The tool supports patient understanding, reduces diet-related errors, and helps improve screening completion. Patients and caregivers are encouraged to print the accompanying guide and keep it in the kitchen as a daily reference during preparation.
           </p>
           <p>
-            This tool is part of <strong>SpeechMED+GI&apos;s</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support.
+            This tool is part of <strong>SpeechMED+GI&apos;s</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support. Learn more at <a href="https://www.speechmed.com" target="_blank" rel="noopener noreferrer" className="underline text-emerald-700 hover:text-emerald-900">speechmed.com</a> or contact us at <a href="mailto:GI@speechmed.com" className="underline text-emerald-700 hover:text-emerald-900">GI@speechmed.com</a>.
           </p>
         </div>
       </details>
@@ -328,8 +329,8 @@ export default function DietForm() {
       <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
         <p className="text-sm text-emerald-800 font-semibold mb-1">About this resource</p>
         <p className="text-sm text-emerald-700">
-          Developed by <strong>SpeechMED+GI</strong> to help patients and caregivers navigate colonoscopy preparation with greater clarity and confidence. Does a food suggestion look wrong for your culture or diet? Email us at{' '}
-          <a href="mailto:GI@speechmed.com?subject=Diet%20Checker%20Feedback" className="text-emerald-600 hover:text-emerald-800 underline">GI@speechmed.com</a>{' '}
+          Developed by <strong>SpeechMED+GI</strong> to help patients and caregivers navigate colonoscopy preparation with greater clarity and confidence. Does a food suggestion look wrong for your culture or diet?{' '}
+          <a href="https://forms.gle/bkERVwZaCK4xiAd39" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-800 underline">Fill out our feedback form</a>{' '}
           and include your Reference code. We review every report.
         </p>
         <a
@@ -345,7 +346,7 @@ export default function DietForm() {
       {/* Disclaimer */}
       <div className="mt-3 mb-6 p-4 bg-amber-50 border border-amber-100 rounded-xl">
         <p className="text-sm text-amber-800">
-          <strong>Medical Disclaimer:</strong> This tool provides general dietary suggestions based on standard low-residue diet guidelines. Always follow your doctor&apos;s specific instructions for your procedure. Individual requirements may vary.
+          <strong>Medical Disclaimer:</strong> This tool provides general dietary suggestions based on standard low-fiber low-residue diet guidelines for 3-5 days before your colonoscopy or endoscopy. After this phase, switch to clear liquids only on the day before your procedure. Always follow your doctor&apos;s specific instructions and prep schedule. Individual requirements may vary.
         </p>
       </div>
     </div>

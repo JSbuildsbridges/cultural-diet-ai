@@ -6,7 +6,7 @@ Only suggest foods explicitly listed below as SAFE.
 --- SAFE FOODS (suggest ONLY these) ---
 
 GRAINS: White rice, white bread (no seeds/nuts), white pasta, plain crackers (no seeds),
-plain oatmeal (no added fruit/nuts), refined cereals (corn flakes, rice krispies)
+refined cereals (corn flakes, rice krispies)
 
 VEGETABLES: Well-cooked canned vegetables (green beans, carrots, beets), pumpkin,
 potato WITHOUT skin, pea puree (no whole peas)
@@ -15,7 +15,7 @@ potato WITHOUT skin, pea puree (no whole peas)
 ⛔ NO legumes, lentils, dal, beans, chickpeas — regardless of preparation
 ⛔ NO whole wheat roti, chapati, naan, injera, or any flatbread made with whole grain flour
 
-FRUITS: Canned fruit, fruit cocktail, ripe banana, avocado
+FRUITS: Canned fruit, fruit cocktail, ripe banana, ripe avocado
 ⛔ NO raw fruit, berries, dried fruit, prune juice
 
 PROTEINS: Ground meat, tender poultry (chicken, turkey), fish, seafood (not shellfish),
@@ -39,7 +39,7 @@ SNACKS/SWEETS: Plain chocolate, syrup, honey, vanilla flavoring
 lentils, dal, dhal, rajma, chana, chickpeas, beans of any kind,
 whole wheat roti, chapati, paratha, injera, whole grain bread,
 raw onions, cooked onions, raw tomatoes, bell peppers,
-brown rice, wild rice, barley, quinoa,
+brown rice, wild rice, barley, quinoa, oatmeal,
 seeds of any kind, nuts of any kind,
 raw vegetables of any kind,
 spicy foods, hot sauce, chili, curry with whole spices,

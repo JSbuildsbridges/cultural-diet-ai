@@ -19,6 +19,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
   const [translating, setTranslating] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [currentLang, setCurrentLang] = useState<'en' | 'native'>('en');
+  const [nativeTtsAvailable, setNativeTtsAvailable] = useState(true);
   const mountTimeRef = useRef(Date.now());
 
   // Stop speech when component unmounts or meal plan changes
@@ -27,6 +28,18 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
       window.speechSynthesis?.cancel();
     };
   }, [mealPlan]);
+
+  // Check if native TTS is available (voices load asynchronously)
+  useEffect(() => {
+    if (!window.speechSynthesis || languageCode === 'en-US') return;
+    const check = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const available = voices.some(v => v.lang.startsWith(languageCode.split('-')[0]));
+      setNativeTtsAvailable(available);
+    };
+    check();
+    window.speechSynthesis.onvoiceschanged = check;
+  }, [languageCode]);
 
   // Track time spent on results page
   useEffect(() => {
@@ -49,7 +62,7 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
     }
   };
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     const content = showTranslated && translatedPlan ? translatedPlan : mealPlan;
 
     // Convert markdown-style text to HTML for printing
@@ -81,6 +94,19 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
         return `<p style="margin-bottom: 6px; color: #374151;">${line}</p>`;
       })
       .join('');
+
+    let qrDataUrl = '';
+    try {
+      const res = await fetch('/Diet_Checker_Feedback_Form_QR.png');
+      const blob = await res.blob();
+      qrDataUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(blob);
+      });
+    } catch {
+      // QR code won't show if fetch fails, but print continues
+    }
 
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
@@ -172,9 +198,9 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
             This meal plan was generated using the Multilingual Low-Fiber Low-Residue Diet Checker (Beta), part of <strong>SpeechMED+GI's</strong> work to improve colonoscopy preparation through plain-language, multilingual, and caregiver-friendly support. Learn more at <strong>speechmed.com</strong> or contact us at <strong>GI@speechmed.com</strong>
           </div>
           <div class="disclaimer">
-            <strong>Medical Disclaimer:</strong> This provides general dietary suggestions based on standard low-residue diet guidelines. Always follow your doctor's specific instructions for your procedure.
+            <strong>Medical Disclaimer:</strong> This tool provides general dietary suggestions based on standard low-fiber low-residue diet guidelines for 3-5 days before your colonoscopy or endoscopy. After this phase, switch to clear liquids only on the day before your procedure. Always follow your doctor's specific instructions and prep schedule. Individual requirements may vary.
           </div>
-          ${referenceKey ? `<div class="reference">⚠️ Does something look wrong? Email <strong>GI@speechmed.com</strong> with your reference code: <strong>${referenceKey}</strong> — We will review it within 48 hours.</div>` : ''}
+          ${referenceKey ? `<div class="reference">⚠️ Does something look wrong? Scan the QR code below or visit <strong>forms.gle/bkERVwZaCK4xiAd39</strong> to fill out our feedback form. Include your reference code: <strong>${referenceKey}</strong> — We will review it within 48 hours.${qrDataUrl ? `<br/><img src="${qrDataUrl}" alt="Feedback Form QR Code" style="width:100px;height:100px;margin-top:8px;display:block;" />` : ''}</div>` : ''}
           <div class="footer">
             ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </div>
@@ -235,7 +261,6 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
     }
 
     if (lang === 'native' && !checkVoiceAvailable(targetLangCode)) {
-      alert(`Sorry, text-to-speech for ${languageName} (${targetLangCode}) is not available in your browser. Try using Google Chrome for more language support, or use the translation text above.`);
       return;
     }
 
@@ -419,30 +444,36 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
         </button>
 
         {/* Speak Native Language */}
-        <button
-          onClick={() => {
-            if (speaking && currentLang === 'native') {
-              stopSpeaking();
-            } else {
-              if (!translatedPlan) {
-                handleTranslate().then(() => speakText('native'));
+        {nativeTtsAvailable ? (
+          <button
+            onClick={() => {
+              if (speaking && currentLang === 'native') {
+                stopSpeaking();
               } else {
-                speakText('native');
+                if (!translatedPlan) {
+                  handleTranslate().then(() => speakText('native'));
+                } else {
+                  speakText('native');
+                }
               }
-            }
-          }}
-          disabled={translating}
-          className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2 ${
-            speaking && currentLang === 'native'
-              ? 'bg-red-500 text-white'
-              : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-900'
-          }`}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-          </svg>
-          {speaking && currentLang === 'native' ? 'Stop' : `Read in ${languageName}`}
-        </button>
+            }}
+            disabled={translating}
+            className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center gap-2 ${
+              speaking && currentLang === 'native'
+                ? 'bg-red-500 text-white'
+                : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-900'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+            {speaking && currentLang === 'native' ? 'Stop' : `Read in ${languageName}`}
+          </button>
+        ) : (
+          <span className="px-4 py-2 text-sm text-gray-400 italic">
+            Audio not available for {languageName}
+          </span>
+        )}
       </div>
 
       {/* Meal Plan Content */}
@@ -460,10 +491,12 @@ export default function MealPlanResult({ mealPlan, culture, languageCode, langua
         <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
           ⚠️ Does something look wrong?{' '}
           <a
-            href={`mailto:GI@speechmed.com?subject=Diet%20Checker%20Feedback%20-%20Ref%3A%20${referenceKey}`}
+            href="https://forms.gle/bkERVwZaCK4xiAd39"
+            target="_blank"
+            rel="noopener noreferrer"
             className="underline font-medium"
           >
-            Email GI@speechmed.com
+            Fill out our feedback form
           </a>{' '}
           with your reference code: <strong>{referenceKey}</strong> — We will review it within 48 hours.
         </div>
