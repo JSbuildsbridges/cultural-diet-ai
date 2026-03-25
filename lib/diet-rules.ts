@@ -8,11 +8,11 @@ Only suggest foods explicitly listed below as SAFE.
 GRAINS: White rice, white bread (no seeds/nuts), white pasta, plain crackers (no seeds),
 refined cereals (corn flakes, rice krispies)
 
-VEGETABLES: Well-cooked canned vegetables (green beans, carrots, beets), pumpkin,
-potato WITHOUT skin, pea puree (no whole peas)
+VEGETABLES: Well-cooked canned vegetables (carrots, beets), pumpkin,
+potato WITHOUT skin
 ⛔ NO raw vegetables of any kind
 ⛔ NO onions, tomatoes, peppers — even cooked (causes irritation)
-⛔ NO legumes, lentils, dal, beans, chickpeas — regardless of preparation
+⛔ NO legumes, lentils, dal, beans, peas, chickpeas — regardless of preparation, including pureed or mashed form
 ⛔ NO whole wheat roti, chapati, naan, injera, or any flatbread made with whole grain flour
 
 FRUITS: Canned fruit, fruit cocktail, ripe banana, ripe avocado
@@ -37,6 +37,7 @@ SNACKS/SWEETS: Plain chocolate, syrup, honey, vanilla flavoring
 
 --- NEVER SUGGEST THESE — HARD BLOCK ---
 lentils, dal, dhal, udad, urad, moong, mung, toor, masoor, misir, rajma, chana, chickpeas, ful, fava beans, black-eyed peas, cowpeas, shiro, beans of any kind,
+peas of any kind, green peas, split peas, pea puree, mushy peas, legumes of any kind,
 whole wheat roti, chapati, paratha, injera, teff, whole grain bread,
 raw onions, cooked onions, raw tomatoes, bell peppers, okra, nopales,
 brown rice, wild rice, barley, quinoa, oatmeal, bulgur, freekeh,
