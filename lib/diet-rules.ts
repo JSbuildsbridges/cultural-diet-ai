@@ -36,16 +36,16 @@ SNACKS/SWEETS: Plain chocolate, syrup, honey, vanilla flavoring
 ⛔ NO popcorn, NO nuts, NO seeds, NO whole grain snacks, NO coconut, NO dried fruit
 
 --- NEVER SUGGEST THESE — HARD BLOCK ---
-lentils, dal, dhal, rajma, chana, chickpeas, beans of any kind,
-whole wheat roti, chapati, paratha, injera, whole grain bread,
-raw onions, cooked onions, raw tomatoes, bell peppers,
-brown rice, wild rice, barley, quinoa, oatmeal,
-seeds of any kind, nuts of any kind,
+lentils, dal, dhal, udad, urad, moong, mung, toor, masoor, misir, rajma, chana, chickpeas, ful, fava beans, black-eyed peas, cowpeas, shiro, beans of any kind,
+whole wheat roti, chapati, paratha, injera, teff, whole grain bread,
+raw onions, cooked onions, raw tomatoes, bell peppers, okra, nopales,
+brown rice, wild rice, barley, quinoa, oatmeal, bulgur, freekeh,
+seeds of any kind, nuts of any kind, egusi,
 raw vegetables of any kind,
 spicy foods, hot sauce, chili, curry with whole spices,
-berries, dried fruit, prune juice,
-popcorn, corn kernels, coconut, corn tortillas, corn chips, cornbread,
-spice mixes of any kind, curry powder, cumin, coriander, turmeric, masala, berbere, garam masala, chili powder, paprika
+berries, dried fruit, prune juice, tamarind,
+popcorn, corn kernels, coconut, corn tortillas, corn chips, cornbread, masa,
+spice mixes of any kind, curry powder, cumin, coriander, turmeric, masala, berbere, garam masala, chili powder, paprika, za'atar, mustard seeds, methi, fenugreek
 
 --- CULTURAL MEAL ASSEMBLY RULE ---
 When suggesting culturally relevant meals, you MUST build dishes using ONLY ingredients
